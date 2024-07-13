@@ -1,3 +1,4 @@
+import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 import SimpleLightbox from "simplelightbox";
@@ -39,4 +40,11 @@ function handlerSubmit(event) {
         })
         .catch(fetchError)
         .finally(refs.searchForm.reset());
+}
+
+function fetchError(error) {
+    iziToast.error({
+        title: "Error",
+        message: "Sorry, there are no images matching your search query. Please try again!",
+    });
 }
