@@ -1,27 +1,6 @@
 @import url('../../node_modules/modern-normalize/modern-normalize.css');
-@import url('./reset.css');
-
-:root {
-  --fg-pb-green: 26, 255, 128;
-  --fg-pb-blue: 46, 207, 255;
-  --fg-pb-amber: 255, 182, 66;
-  --fg-pb-white: 192, 255, 255;
-  --fo-fg: var(--fg-pb-green);
-  --fo-bg: var(--fg-pb-green), 0.25;
-}
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #fff;
-  height: 100vh;
-}
-
-.container {
-  overflow: hidden;
-  max-width: 1440px;
-  padding: 15px;
-  margin: 0 auto;
-}
+@import url('./null.css');
+@import url('./base.css');
 
 input:focus,
 input:active {

@@ -1,7 +1,7 @@
 import { handlerError } from './render-function';
 
 const searchSettings = {
-  key: '44856492-1c75259359e870db5bcbdf4ec',
+  key: '44443472-3b41bcc651e7d0b56b1888f38',
   q: '',
   image_type: 'photo',
   orientation: 'horizontal',

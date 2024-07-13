@@ -58,7 +58,7 @@ export function handlerError(error) {
     case 'outdata':
       iziToast.warning({
         title: 'Error',
-        message: 'Заповніть поле для пошуку!',
+        message: 'Введіть данні для пошуку!',
       });
       break;
     case 'nodata':
@@ -71,7 +71,7 @@ export function handlerError(error) {
     default:
       iziToast.error({
         title: 'Error',
-        message: 'Все не так! Ми шукаємо спосіб вирішення цього',
+        message: 'Щось пішло не так. Ми працюемо над вирішенням питання!',
       });
       break;
   }
