@@ -54,7 +54,7 @@ function fetchError(error) {
         
 
     case 'nodata':
-      iziToast.warning({
+      iziToast.error({
         title: 'Error',
         message:
           'Sorry, there are no images matching your search query. Please try again!',
