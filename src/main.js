@@ -42,10 +42,17 @@ function handlerSubmit(event) {
         .finally(refs.searchForm.reset());
 }
 
-// function fetchError(error) {
-//     iziToast.error({
-//         title: "Error",
-//         message: "Sorry, there are no images matching your search query. Please try again!",
-//     });
-// }
+function fetchError(error) {
+    iziToast.error({
+        title: "Error",
+        message: "Sorry, there are no images matching your search query. Please try again!",
+    });
+}
+
+function fetchError(error) {
+    iziToast.warning({
+        title: "Error",
+        message: "Введіть данні для пошуку!",
+    });
+}
 
