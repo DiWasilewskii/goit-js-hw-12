@@ -42,7 +42,7 @@ function handlerSubmit(event) {
         .finally(refs.searchForm.reset());
 }
 
-export function fetchError(error) {
+function fetchError(error) {
     switch (error)
     {
         case 'outdata':
