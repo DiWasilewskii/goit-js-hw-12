@@ -33,28 +33,3 @@ export function renderPictures(hits) {
       </li>
     `).join("");
 }
-
-
-export function handlerError(error) {
-  switch (error) {
-    case 'outdata':
-      iziToast.warning({
-        title: 'Error',
-        message: 'Введіть данні для пошуку!',
-      });
-      break;
-    case 'nodata':
-      iziToast.warning({
-        title: 'Error',
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-      });
-      break;
-    default:
-      iziToast.error({
-        title: 'Error',
-        message: 'Щось пішло не так. Ми працюемо над вирішенням питання!',
-      });
-      break;
-  }
-}
