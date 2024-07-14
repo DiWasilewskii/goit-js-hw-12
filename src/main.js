@@ -49,10 +49,10 @@ function fetchError(error) {
     });
 }
 
-function fetchError(error) {
-    iziToast.warning({
-        title: "Error",
-        message: "Введіть данні для пошуку!",
-    });
-}
+// function fetchError(error) {
+//     iziToast.warning({
+//         title: "Error",
+//         message: "Введіть данні для пошуку!",
+//     });
+// }
 
