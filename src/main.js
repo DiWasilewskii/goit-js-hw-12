@@ -61,11 +61,6 @@ export function fetchError(error) {
       });
             break;
         
-    default:
-      iziToast.error({
-        title: 'Error',
-        message: 'Щось пішло не так. Ми працюемо над вирішенням питання!',
-      });
-      break;
+   
   }
 }
