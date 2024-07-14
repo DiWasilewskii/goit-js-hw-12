@@ -1,39 +1,67 @@
-import { renderCard, refs, handlerError } from './js/render-function';
-import { fetchImage, generateSearchString } from './js/paxabay-api';
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-refs.searchForm.addEventListener('submit', handlerSearchButton);
+import { renderPictures } from "./js/render-functions";
+import { generateHttpsQuery, fetchPictures } from "./js/pixabay-api";
 
-function handlerSearchButton(event) {
-  event.preventDefault();
-  const searchText = event.target.searchtext.value;
-  if (!searchText) {
-    handlerError('outdata');
-    return;
-  }
-  refs.gallery.innerHTML = '';
-  refs.loader.classList.add('loader');
-  fetchImage(generateSearchString(searchText))
-    .then(image => {
-      refs.loader.classList.remove('loader');
-      if (image.totalHits === 0) {
-        handlerError('nodata');
-        return;
-      }
-      refs.gallery.insertAdjacentHTML('beforeend', renderCard(image.hits));
-      galleryBigImage.refresh();
-    })
-    .catch(error => {
-      refs.loader.classList.remove('loader');
-      handlerError(error);
-    })
-    .finally(refs.searchForm.reset());
-}
-const galleryBigImage = new SimpleLightbox('.gallery a', {
-  captionDelay: 250,
-  overlayOpacity: 0.8,
-  scrollZoom: false,
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionDelay: 250,
+    captionPosition: "bottom",
+    captionsData: "alt"
 });
-galleryBigImage.on('show.simplelightbox', function () {});
+
+const refs = {
+    searchForm: document.querySelector(".js-search-form"),
+    gallery: document.querySelector(".js-gallery"),
+    loader: document.querySelector(".js-loader"),
+};
+
+refs.searchForm.addEventListener("submit", handlerSubmit);
+
+function handlerSubmit(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formValue = form.elements.searchtext.value.toLowerCase().trim();
+    refs.gallery.innerHTML = "";
+    refs.loader.classList.add("loader");
+    fetchPictures(generateHttpsQuery(formValue))
+        .then((data) => {
+            refs.loader.classList.remove("loader");
+            const hits = data.hits;
+            if (hits.length === 0) {
+                fetchError();
+            } 
+            refs.gallery.insertAdjacentHTML("beforeend", renderPictures(hits));
+            lightbox.refresh();
+        })
+        .catch(fetchError)
+        .finally(refs.searchForm.reset());
+}
+
+export function handlerError(error) {
+  switch (error) {
+    case 'outdata':
+      iziToast.warning({
+        title: 'Error',
+        message: 'Введіть данні для пошуку!',
+      });
+      break;
+    case 'nodata':
+      iziToast.warning({
+        title: 'Error',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+      });
+      break;
+    default:
+      iziToast.error({
+        title: 'Error',
+        message: 'Щось пішло не так. Ми працюемо над вирішенням питання!',
+      });
+      break;
+  }
+}
