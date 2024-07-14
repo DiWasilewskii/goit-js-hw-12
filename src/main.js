@@ -1,5 +1,5 @@
 import { renderCard, refs, handlerError } from './js/render-functions';
-import { fetchImage, generateSearchString } from './js/pixabay-api';
+import { fetchImage, generateSearchString } from './js/paxabay-api';
 
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
