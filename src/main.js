@@ -28,7 +28,7 @@ function handlerSubmit(event) {
     const formValue = form.elements.searchtext.value.toLowerCase().trim();
     
     // Перевірка на порожній рядок
-    if (formValue === "") {
+    if event.currentTarget("") {
         iziToast.error({
             title: "Error",
             message: "Search field cannot be empty. Please enter a search query!",
