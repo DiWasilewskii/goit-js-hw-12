@@ -26,9 +26,11 @@ function handlerSubmit(event) {
 
     const form = event.currentTarget;
     const formValue = form.elements.searchtext.value.toLowerCase().trim();
-    
+
+    console.log("Form Value: ", formValue); // Додано для дебагінгу
+
     // Перевірка на порожній рядок
-    if event.currentTarget("") {
+    if (!formValue) { // Замість formValue === "" використовуйте !formValue
         iziToast.error({
             title: "Error",
             message: "Search field cannot be empty. Please enter a search query!",
@@ -44,15 +46,18 @@ function handlerSubmit(event) {
             const hits = data.hits;
             if (hits.length === 0) {
                 fetchError();
-            } 
-            refs.gallery.insertAdjacentHTML("beforeend", renderPictures(hits));
-            lightbox.refresh();
+            } else {
+                refs.gallery.insertAdjacentHTML("beforeend", renderPictures(hits));
+                lightbox.refresh();
+            }
         })
         .catch(fetchError)
-        .finally(refs.searchForm.reset());
+        .finally(() => {
+            refs.searchForm.reset();
+        });
 }
 
-function fetchError(error) {
+function fetchError() {
     iziToast.error({
         title: "Error",
         message: "Sorry, there are no images matching your search query. Please try again!",
