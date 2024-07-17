@@ -26,6 +26,16 @@ function handlerSubmit(event) {
 
     const form = event.currentTarget;
     const formValue = form.elements.searchtext.value.toLowerCase().trim();
+    
+    // Перевірка на порожній рядок
+    if (formValue === "") {
+        iziToast.error({
+            title: "Error",
+            message: "Search field cannot be empty. Please enter a search query!",
+        });
+        return; // Завершуємо виконання функції, якщо поле порожнє
+    }
+
     refs.gallery.innerHTML = "";
     refs.loader.classList.add("loader");
     fetchPictures(generateHttpsQuery(formValue))
