@@ -27,15 +27,15 @@ function handlerSubmit(event) {
     const form = event.currentTarget;
     const formValue = form.elements.searchtext.value.toLowerCase().trim();
 
-    console.log("Form Value: ", formValue); // Додано для дебагінгу
+    console.log("Form Value: ", formValue); 
 
     // Перевірка на порожній рядок
-    if (!formValue) { // Замість formValue === "" використовуйте !formValue
+    if (!formValue) { 
         iziToast.error({
             title: "Error",
             message: "Search field cannot be empty. Please enter a search query!",
         });
-        return; // Завершуємо виконання функції, якщо поле порожнє
+        return; 
     }
 
     refs.gallery.innerHTML = "";
