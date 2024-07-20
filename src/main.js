@@ -4,7 +4,6 @@ import "izitoast/dist/css/iziToast.min.css";
 import { lightbox, refs, renderPictures, showLoader, hideLoader, showButton, hideButton, scrollGalerryCard } from "./js/render-functions";
 import { searchParams, getPictures } from "./js/pixabay-api";
 
-
 hideLoader();
 hideButton();
 
@@ -17,6 +16,7 @@ async function handlerSearch(event) {
     
     const form = event.currentTarget;
     searchParams.q = form.elements.searchtext.value.trim();
+    searchParams.page = 1;
 
     if (!searchParams.q) {
         noRequestError();
@@ -27,21 +27,22 @@ async function handlerSearch(event) {
     showLoader();
 
     try {
-        const { totalHits, hits } = await getPictures();
+        const { totalHits, hits } = await getPictures(searchParams);
 
         hideLoader();
         searchParams.maxPage = Math.ceil(totalHits / searchParams.per_page);
         refs.gallery.insertAdjacentHTML("beforeend", renderPictures(hits));
         lightbox.refresh();
 
-        if (hits.length > 0 && hits.length !== totalHits) {
+        if (hits.length > 0 && searchParams.page < searchParams.maxPage) {
             showButton();
+            refs.loadMoreBtn.removeEventListener("click", handlerLoadMore); 
             refs.loadMoreBtn.addEventListener("click", handlerLoadMore);
         } else if (hits.length === 0) {
             noImagesError();
         }
     } catch (error) {
-        noImagesError;
+        noImagesError();
     } finally {
         refs.searchForm.reset();
     }
@@ -53,7 +54,7 @@ async function handlerLoadMore() {
     showLoader();
 
     try {
-        const { hits } = await getPictures(); 
+        const { hits } = await getPictures(searchParams);
 
         showButton();
         hideLoader();
@@ -61,14 +62,14 @@ async function handlerLoadMore() {
         refs.gallery.insertAdjacentHTML("beforeend", renderPictures(hits));
         lightbox.refresh();
         scrollGalerryCard();
-    } catch (error) {
-        noImagesError;
-    } finally {
-        if (searchParams.page === searchParams.maxPage) {
+
+        if (searchParams.page >= searchParams.maxPage) {
             hideButton();
             endSearchMessage();
             refs.loadMoreBtn.removeEventListener("click", handlerLoadMore);
         }
+    } catch (error) {
+        noImagesError();
     }
 }
 
