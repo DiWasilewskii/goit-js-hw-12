@@ -4,11 +4,17 @@ import "izitoast/dist/css/iziToast.min.css";
 import { lightbox, refs, renderPictures, showLoader, hideLoader, showButton, hideButton, scrollGalerryCard } from "./js/render-functions";
 import { searchParams, getPictures } from "./js/pixabay-api";
 
+// Додати page та per_page до searchParams
+searchParams.page = 1;
+searchParams.per_page = 20;
 
 hideLoader();
 hideButton();
 
 refs.searchForm.addEventListener("submit", handlerSearch);
+
+// Слухач на кнопку Load More розміщено у глобальній області видимості
+refs.loadMoreBtn.addEventListener("click", handlerLoadMore);
 
 async function handlerSearch(event) {
     event.preventDefault();
@@ -17,6 +23,7 @@ async function handlerSearch(event) {
     
     const form = event.currentTarget;
     searchParams.q = form.elements.searchtext.value.trim();
+    searchParams.page = 1;  // Встановити page на 1 при натисканні кнопки пошуку
 
     if (!searchParams.q) {
         noRequestError();
@@ -36,19 +43,18 @@ async function handlerSearch(event) {
 
         if (hits.length > 0 && hits.length !== totalHits) {
             showButton();
-            refs.loadMoreBtn.addEventListener("click", handlerLoadMore);
         } else if (hits.length === 0) {
             noImagesError();
         }
     } catch (error) {
-        noImagesError;
+        noImagesError();
     } finally {
         refs.searchForm.reset();
     }
 }
 
 async function handlerLoadMore() {
-    searchParams.page += 1;
+    searchParams.page += 1;  // Збільшити page на 1 при натисканні кнопки Load More
     hideButton();
     showLoader();
 
@@ -62,12 +68,11 @@ async function handlerLoadMore() {
         lightbox.refresh();
         scrollGalerryCard();
     } catch (error) {
-        noImagesError;
+        noImagesError();
     } finally {
         if (searchParams.page === searchParams.maxPage) {
             hideButton();
             endSearchMessage();
-            refs.loadMoreBtn.removeEventListener("click", handlerLoadMore);
         }
     }
 }
